@@ -3,7 +3,7 @@ import torch
 from ultralytics import YOLO
 
 # CONFIG 
-CAMERA_INDEX = "http://172.20.10.2:4747/video"
+CAMERA_INDEX = "http://192.168.100.140:4747/video"
 PHONE_CONF = 0.28
 CHEAT_CONF = 0.2
 PERSIST_FRAMES = 13
@@ -12,8 +12,8 @@ PERSIST_FRAMES = 13
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
 print(f"Using device: {device}")
 
-phone_model = YOLO('C:\\Users\\Khaleel\\Desktop\\Grad\\examguard-ui\\best_phone_detection.pt')
-cheat_model = YOLO('C:\\Users\\Khaleel\\Desktop\\Grad\\examguard-ui\\best.pt')
+phone_model = YOLO('backend/best_phone_detection.pt')
+cheat_model = YOLO('backend/best.pt')
 phone_model.to(device)
 cheat_model.to(device)
 

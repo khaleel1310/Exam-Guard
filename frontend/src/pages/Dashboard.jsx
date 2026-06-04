@@ -17,6 +17,7 @@ function LiveTime() {
  
 // Dummy data — replace with real WebSocket data later.
 // Added seat, camera_id, camera_label, and status to match the full alert contract.
+
 const DUMMY_ALERTS = [
   {
     alert_id: "123",
@@ -55,12 +56,26 @@ const DUMMY_ALERTS = [
     status: "pending",
   },
 ];
- 
 export default function Dashboard() {
   const [alerts, setAlerts] = useState(DUMMY_ALERTS);
   // null = nothing selected yet, so AlertDetails shows a placeholder
   const [selectedAlert, setSelectedAlert] = useState(null);
  
+useEffect(() => {
+  const ws = new WebSocket("ws://localhost:8000/ws");
+
+  ws.onmessage = (event) => {
+    const alert = JSON.parse(event.data);
+    setAlerts((prev) => [alert, ...prev]); // new alerts appear at top
+  };
+
+  ws.onerror = (e) => console.error("WS error", e);
+
+  return () => ws.close();
+}, []);
+ 
+
+
   // Helper: update one alert's fields and keep selectedAlert in sync
   function updateAlert(alert_id, changes) {
     setAlerts((prev) =>
